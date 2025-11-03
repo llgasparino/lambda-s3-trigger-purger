@@ -1,9 +1,22 @@
 # AWS Lambda S3 Cloudflare Purger
 
-[![Terraform](https://img.shields.io/badge/Terraform-~>5.0-blue?logo=terraform)](https://www.terraform.io)
-[![AWS Provider](https://img.shields.io/badge/AWS_Provider-~>5.0-orange?logo=amazon-aws)](https://registry.terraform.io/providers/hashicorp/aws/latest)
-[![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python)](https://www.python.org)
+<p align="left">
+  <a href="https://hits.dwyl.com/llgasparino/lambda-api-purge-cloudflare">
+    <img src="https://hits.dwyl.com/llgasparino/lambda-api-purge-cloudflare.svg" alt="Visitors"/>
+  </a>
+  <a href="https://github.com/llgasparino/lambda-api-purge-cloudflare/stargazers">
+    <img src="https://img.shields.io/github/stars/llgasparino/lambda-api-purge-cloudflare?style=social" alt="GitHub Stars">
+  </a>
+  <a href="https://github.com/llgasparino/lambda-api-purge-cloudflare/network/members">
+    <img src="https://img.shields.io/github/forks/llgasparino/lambda-api-purge-cloudflare?style=social" alt="GitHub Forks">
+  </a>
+</p>
 
+<p align="left">
+  <img src="https://img.shields.io/badge/Terraform-~>5.0-blue?logo=terraform" alt="Terraform">
+  <img src="https://img.shields.io/badge/AWS_Provider-~>5.0-orange?logo=amazon-aws" alt="AWS Provider">
+  <img src="https://img.shields.io/badge/Python-3.12-3776AB?logo=python" alt="Python">
+</p>
 
 Este projeto provisiona uma função Lambda na AWS que limpa automaticamente o cache de arquivos no Cloudflare sempre que um objeto é criado ou modificado em um bucket S3.
 
@@ -40,3 +53,4 @@ Antes de rodar, você deve configurar os seguintes **Segredos** no seu repositó
 
 
 Faça um push (ou merge) para o branch `main`. A Action será disparada automaticamente, executando `terraform init`, `plan` e `apply`.
+
