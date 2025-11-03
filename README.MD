@@ -3,6 +3,8 @@
 [![Terraform](https://img.shields.io/badge/Terraform-~>5.0-blue?logo=terraform)](https://www.terraform.io)
 [![AWS Provider](https://img.shields.io/badge/AWS_Provider-~>5.0-orange?logo=amazon-aws)](https://registry.terraform.io/providers/hashicorp/aws/latest)
 [![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python)](https://www.python.org)
+
+
 Este projeto provisiona uma função Lambda na AWS que limpa automaticamente o cache de arquivos no Cloudflare sempre que um objeto é criado ou modificado em um bucket S3.
 
 A Lambda é configurada para rodar dentro de uma VPC, garantindo que todas as requisições de API para o Cloudflare saiam de um IP estático (via NAT Gateway).
@@ -35,5 +37,6 @@ Antes de rodar, você deve configurar os seguintes **Segredos** no seu repositó
 * Você também deve atualizar o arquivo `main.tf` para apontar para o seu próprio bucket S3 de armazenamento de estado (terraform state backend).
 
 ### 3. Executando o Deploy
+
 
 Faça um push (ou merge) para o branch `main`. A Action será disparada automaticamente, executando `terraform init`, `plan` e `apply`.
