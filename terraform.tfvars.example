@@ -1,0 +1,12 @@
+# terraform.tfvars.example
+# Renomeie este arquivo para .tfvars e preencha os valores
+
+project_prefix         = "meu-projeto-prod"
+aws_region             = "us-east-1"
+vpc_subnet_ids         = ["subnet-xxxxxxxxxxxxx", "subnet-yyyyyyyyyyyyy"]
+vpc_security_group_ids = ["sg-zzzzzzzzzzzzzzzz"]
+s3_bucket_name         = "meu-bucket-de-arquivos.meusite.com"
+cloudflare_domain      = "cdn.meusite.com"
+
+# As variáveis 'cloudflare_api_token' e 'cloudflare_zone_id'
+# são sensíveis e devem ser passadas pela pipeline (ex: TF_VAR_...)

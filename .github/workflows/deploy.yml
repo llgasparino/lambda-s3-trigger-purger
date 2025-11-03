@@ -1,0 +1,60 @@
+name: Deploy Lambda S3 Purger
+
+on:
+  # Dispara em push/merge no branch 'main'
+  push:
+    branches:
+      - main
+  # Permite disparar manualmente pela aba "Actions" do GitHub
+  workflow_dispatch:
+
+jobs:
+  deploy-terraform:
+    name: 'Terraform Deploy'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # Autentica na AWS usando os Segredos do GitHub
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1 # Ou var.aws_region
+
+      - name: Terraform Init
+        run: terraform init
+        env:
+          # O backend S3 precisa de autenticação para ler o estado
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan -no-color
+        env:
+          # Injeta os segredos como variáveis do Terraform
+          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          TF_VAR_s3_bucket_name: ${{ secrets.S3_BUCKET_NAME }}
+          TF_VAR_cloudflare_domain_name: ${{ secrets.CLOUDFLARE_DOMAIN_NAME }}
+          TF_VAR_vpc_subnet_ids: ${{ secrets.VPC_SUBNET_IDS }}
+          TF_VAR_vpc_security_group_ids: ${{ secrets.VPC_SECURITY_GROUP_IDS }}
+
+      - name: Terraform Apply
+        # Só executa o 'apply' se for no branch 'main'
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve "tfplan"
+        env:
+          # Repete os segredos para o 'apply'
+          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          TF_VAR_s3_bucket_name: ${{ secrets.S3_BUCKET_NAME }}
+          TF_VAR_cloudflare_domain_name: ${{ secrets.CLOUDFLARE_DOMAIN_NAME }}
+          TF_VAR_vpc_subnet_ids: ${{ secrets.VPC_SUBNET_IDS }}
+          TF_VAR_vpc_security_group_ids: ${{ secrets.VPC_SECURITY_GROUP_IDS }}
